@@ -11,14 +11,15 @@ while True:
     img2 = cv2.GaussianBlur(gray,(5,5),0)
     ret, thresh = cv2.threshold(img2 ,127,255,cv2.THRESH_BINARY)
     kernel = np.ones((5,5),np.uint8)
-    dilate = cv2.dilate(thresh,kernel,iterations=1)
-    erosion = cv2.erode(dilate,kernel,iterations=1)
+    
+    erosion = cv2.erode(thresh,kernel,iterations=1)
+    dilate = cv2.dilate(erosion,kernel,iterations=1)
     im2, contours, hierarchy = cv2.findContours(erosion, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    print(contours)
     cv2.drawContours(img,contours,-1,(255,0,0),2)
     cv2.imshow("FINAL",img)
     if cv2.waitKey(1)==27:
         break
 cap.release()
 cv2.destroyAllWindows()
-
 
